@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import {List, Button} from './Contacts.styled';
 import {filteredContacts} from '../Filter/Filter'
 
@@ -15,4 +16,8 @@ export const Contacts = ({deleteContact}) => {
                 })}
             </List>
         )                                      
+    }
+
+    Contacts.propTypes = {
+        deleteContact:PropTypes.func
     }

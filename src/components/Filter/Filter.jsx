@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from "prop-types"
 import {Box} from '../Box'
 import {Label, Input}from './Filter.styled';
 
@@ -19,3 +20,10 @@ export const Filter = ({value, onChange, filter, contacts}) => {
     )
 
 }
+
+Filter.propTypes = {
+    value: PropTypes.string,
+    onChange: PropTypes.func,
+    filter: PropTypes.string,
+    contacts:PropTypes.array
+  };

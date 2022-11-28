@@ -1,4 +1,5 @@
-import {Component} from 'react';
+import PropTypes from "prop-types"
+import {useState} from 'react';
 import {Box} from '../Box'
 import { nanoid } from 'nanoid'
 import {Input, Button, Label}from './Form.styled';
@@ -7,58 +8,55 @@ import {Input, Button, Label}from './Form.styled';
 
 
 
-export class Form extends Component {
-    state = {
-        name: '',
-        number: '',
-        }
-        handleChange = event => {
-            const {name, value} = event.currentTarget;
-            this.setState({[name]:value})
-        }
-        handleSubmit = event => {
+export const Form = ({onSubmit}) => {
+
+    const [name, setName] = useState('');
+        const [number, setNumber] = useState('');
+        
+        const handleSubmit = event => {
             event.preventDefault();
-            this.props.onSubmit({...this.state, id:nanoid()});
-            this.resetForm();
+            onSubmit({name,number, id:nanoid()});
+            resetForm();
         }
-        resetForm = () => {
-            this.setState({
-                name: '',
-                number: '',
-            })
+        const resetForm = () => {
+                setName('');
+                setNumber('');
         }
-    render(){
+
     return(
     <Box  as="form" border="normal" p={4} 
     display='flex'
      flexDirection='column' 
      width={400}
-     onSubmit={this.handleSubmit}
+     onSubmit={handleSubmit}
       >
         <Label htmlFor='name' >Name</Label>
             <Input 
                 id="name"
                 type="text"
                 name="name"
-                value={this.state.name}
+                value={name}
                 pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
                 title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
                 required
-                onChange={this.handleChange}
+                onChange={event => setName(event.target.value)}
                 />
                 <Label htmlFor="number">Number</Label>
                 <Input
                   id="number"
                   type="tel"
                   name="number"
-                  value={this.state.number}
+                  value={number}
                   pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
                   title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
                   required
-                  onChange={this.handleChange}
+                  onChange={event => setNumber(event.target.value)}
                 />
                 <Button type="submit">Add contact</Button>
     </Box >
                 )
-    }
+}
+
+Form.propTypes = {
+    onSubmit:PropTypes.func
 }
